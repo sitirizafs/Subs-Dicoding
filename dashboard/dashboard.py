@@ -67,7 +67,7 @@ def create_rfm_df(df):
     return rfm_df
 
 ##load berkas 'all_data.csv'
-all_info_product_df = pd.read_csv("D:/BANGKIT/Submission/dashboard/all_data.csv")
+all_info_product_df = pd.read_csv("dashboard/all_data.csv")
 
 #mengurutkan dataframe kolom
 datetime_columns = ["order_purchase_timestamp", "order_delivered_carrier_date"]
