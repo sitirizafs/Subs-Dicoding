@@ -1,11 +1,12 @@
 #import seluruh library
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 from babel.numbers import format_currency
 import pipreqs
-sns.set(style='dark')
+sns.set(style='dark') 
 
 
 ##siapkan helper function
@@ -54,7 +55,10 @@ def create_rfm_df(df):
         "price": "sum"
     })
     rfm_df.columns = ["customer_id", "max_order_timestamp", "frequency", "monetary"]
-    
+
+#memperpendek customer_id menjadi inisial (4 karakter di depan)
+    rfm_df["customer_id_initial"] = rfm_df["customer_id"].str[:4]
+
     rfm_df["max_order_timestamp"] = rfm_df["max_order_timestamp"].dt.date
     recent_date = df["order_purchase_timestamp"].dt.date.max()
     rfm_df["recency"] = rfm_df["max_order_timestamp"].apply(lambda x: (recent_date - x).days)
@@ -63,7 +67,7 @@ def create_rfm_df(df):
     return rfm_df
 
 ##load berkas 'all_data.csv'
-all_info_product_df = pd.read_csv("dashboard/all_data.csv")
+all_info_product_df = pd.read_csv("D:/BANGKIT/Submission/dashboard/all_data.csv")
 
 #mengurutkan dataframe kolom
 datetime_columns = ["order_purchase_timestamp", "order_delivered_carrier_date"]
@@ -216,23 +220,23 @@ with col3:
 fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(35, 15))
 colors = ["#90CAF9", "#90CAF9", "#90CAF9", "#90CAF9", "#90CAF9"]
  
-sns.barplot(y="recency", x="customer_id", data=rfm_df.sort_values(by="recency", ascending=True).head(5), palette=colors, ax=ax[0])
+sns.barplot(y="recency", x="customer_id_initial", data=rfm_df.sort_values(by="recency", ascending=True).head(5), palette=colors, ax=ax[0])
 ax[0].set_ylabel(None)
-ax[0].set_xlabel("customer_id", fontsize=30)
+ax[0].set_xlabel("customer_id_initial", fontsize=10)
 ax[0].set_title("By Recency (days)", loc="center", fontsize=50)
 ax[0].tick_params(axis='y', labelsize=30)
 ax[0].tick_params(axis='x', labelsize=35)
  
-sns.barplot(y="frequency", x="customer_id", data=rfm_df.sort_values(by="frequency", ascending=False).head(5), palette=colors, ax=ax[1])
+sns.barplot(y="frequency", x="customer_id_initial", data=rfm_df.sort_values(by="frequency", ascending=False).head(5), palette=colors, ax=ax[1])
 ax[1].set_ylabel(None)
-ax[1].set_xlabel("customer_id", fontsize=30)
+ax[1].set_xlabel("ccustomer_id_initial", fontsize=30)
 ax[1].set_title("By Frequency", loc="center", fontsize=50)
 ax[1].tick_params(axis='y', labelsize=30)
 ax[1].tick_params(axis='x', labelsize=35)
  
-sns.barplot(y="monetary", x="customer_id", data=rfm_df.sort_values(by="monetary", ascending=False).head(5), palette=colors, ax=ax[2])
+sns.barplot(y="monetary", x="customer_id_initial", data=rfm_df.sort_values(by="monetary", ascending=False).head(5), palette=colors, ax=ax[2])
 ax[2].set_ylabel(None)
-ax[2].set_xlabel("customer_id", fontsize=30)
+ax[2].set_xlabel("customer_id_initial", fontsize=30)
 ax[2].set_title("By Monetary", loc="center", fontsize=50)
 ax[2].tick_params(axis='y', labelsize=30)
 ax[2].tick_params(axis='x', labelsize=35)
